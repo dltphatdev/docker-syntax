@@ -244,3 +244,102 @@ Còn chưa có container thì thêm vào câu lệnh `docker run` option là `--
 ```bash
 docker run -dp 3000:3000 --name twitter-clone --restart unless-stopped -v ~/twitter-clone/uploads:/app/uploads duthanhduoc/twitter:v4
 ```
+
+## Docker VPS:
+
+- Kiểm tra tất cả Docker Container
+
+```bash
+docker ps -a
+```
+
+- Xoá container
+
+```bash
+docker rm <ten_container_hoac_hash_name>
+```
+
+- Nếu container đang chạy và muốn xoá luôn:
+
+```bash
+docker rm -f <ten_container_hoac_hash_name>
+```
+
+- Kiểm tra image
+
+```bash
+docker images
+```
+
+- Xoá image:
+
+```bash
+docker rmi <image_name>:<image_tag>
+docker rmi chatbot/python:v0
+```
+
+- Dọn sạch docker rác:
+
+```bash
+docker container prune -f
+```
+
+- Xoá image không dùng:
+
+```bash
+docker image prune -a -f
+```
+
+- Xoá cả system rác:
+
+```bash
+docker system prune -a -f
+```
+
+## Mongo VPS
+
+- Kiểm tra service MongoDB
+
+```bash
+sudo systemctl status mongod --no-pager
+```
+
+```bash
+sudo systemctl restart mongod
+sudo systemctl start mongod
+sudo systemctl enable mongod
+```
+
+- Nếu thấy 127.0.0.1:27017 → sửa bindIp để cho container kết nối
+
+```bash
+sudo nano /etc/mongod.conf
+```
+
+```yaml
+net:
+  bindIp: 0.0.0.0 # sửa 127.0.0.1 -> 0.0.0.0 trên VPS
+  port: 27017
+```
+
+- Kiểm tra port mongo
+
+```bash
+sudo ss -lntp | grep 27017
+```
+
+## Cách kết nối MongoDB với Compass Local -> VPS
+
+- Kết nối ssh vào server và để cửa sổ đó không đóng
+
+```bash
+ssh -L 27017:127.0.0.1:27017 administrator@xxxx.xxxx.xxxx.xxxx
+```
+
+- Chỉ cần kết nối Compass với MongoVPS là xong
+
+## Cách kiểm tra tất cả cổng đang hoạt động:
+
+```bash
+sudo ss -tupnel
+```
